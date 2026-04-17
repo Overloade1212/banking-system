@@ -1,4 +1,4 @@
-package org.manage.bankserver.model;
+package org.manage.bankserver.entity.enums;
 
 public enum AccountType {
     SAVINGS,

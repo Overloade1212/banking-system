@@ -1,11 +1,11 @@
-package org.manage.bankserver.model;
+package org.manage.bankserver.entity;
 
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.manage.bankserver.entity.enums.AccountType;
 import org.manage.bankserver.strategy.AccountPolicy;
 import org.manage.bankserver.strategy.SavingsPolicy;
 
@@ -17,11 +17,13 @@ import java.util.UUID;
 @Table(name = "accounts")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Column(nullable = false, unique = true)
@@ -30,12 +32,14 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccountType type;
+
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @Transient
     private AccountPolicy policy;

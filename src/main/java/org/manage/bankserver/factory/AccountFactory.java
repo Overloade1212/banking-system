@@ -2,8 +2,8 @@ package org.manage.bankserver.factory;
 
 
 
-import org.manage.bankserver.model.Account;
-import org.manage.bankserver.model.AccountType;
+import org.manage.bankserver.entity.Account;
+import org.manage.bankserver.entity.enums.AccountType;
 import org.manage.bankserver.strategy.SavingsPolicy;
 
 import java.math.BigDecimal;
