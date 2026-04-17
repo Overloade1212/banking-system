@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Account {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
+    
     private UUID id;
 
     @Column(nullable = false, unique = true)
