@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.manage.bankserver.entity.enums.AccountType;
-import org.manage.bankserver.strategy.AccountPolicy;
-import org.manage.bankserver.strategy.SavingsPolicy;
+import org.manage.bankserver.strategy.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -83,7 +82,10 @@ public class Account {
 
         switch (this.type) {
             case SAVINGS -> this.policy = new SavingsPolicy();
-            default -> throw new IllegalStateException("Unknown account type: " + type);
+            case CHECKING -> this.policy = new CheckingPolicy();
+            case CREDIT -> this.policy = new CreditPolicy();
+            case BUSINESS -> this.policy = new BusinessPolicy();
+            case INVESTMENT -> this.policy = new InvestmentPolicy();
         }
     }
 }
