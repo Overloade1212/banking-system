@@ -72,4 +72,16 @@ public class AccountService  {
                 .createdAt(saved.getCreatedAt())
                 .build();
     }
+    public AccountResponse getAccount(UUID id) {
+        Account account = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        return AccountResponse.builder()
+                .id(account.getId())
+                .username(account.getUsername())
+                .balance(account.getBalance())
+                .type(account.getType().name())
+                .createdAt(account.getCreatedAt())
+                .build();
+    }
 }

@@ -30,4 +30,8 @@ public class AccountController {
                                     @RequestParam BigDecimal amount) {
         return accountService.withdraw(id, amount);
     }
+    @GetMapping("/{id}")
+    public AccountResponse getAccount(@PathVariable UUID id) {
+        return accountService.getAccount(id);
+    }
 }
