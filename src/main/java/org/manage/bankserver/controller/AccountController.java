@@ -3,10 +3,13 @@ package org.manage.bankserver.controller;
 import lombok.RequiredArgsConstructor;
 import org.manage.bankserver.dto.AccountResponse;
 import org.manage.bankserver.dto.RegisterAccountRequest;
+import org.manage.bankserver.entity.Transaction;
+import org.manage.bankserver.repository.TransactionRepository;
 import org.manage.bankserver.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,6 +18,7 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
+    private final TransactionRepository transactionRepository;
 
     @PostMapping
     public AccountResponse registerAccount(@RequestBody RegisterAccountRequest request) {
@@ -33,5 +37,9 @@ public class AccountController {
     @GetMapping("/{id}")
     public AccountResponse getAccount(@PathVariable UUID id) {
         return accountService.getAccount(id);
+    }
+    @GetMapping("/{id}/transactions")
+    public List<Transaction> getTransactions(@PathVariable UUID id) {
+        return transactionRepository.findByAccountId(id);
     }
 }
