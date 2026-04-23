@@ -1,0 +1,20 @@
+package org.manage.bankserver.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.manage.bankserver.dto.AccountResponse;
+import org.manage.bankserver.dto.RegisterAccountRequest;
+import org.manage.bankserver.service.AccountService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/accounts")
+@RequiredArgsConstructor
+public class AccountController {
+
+    private final AccountService accountService;
+
+    @PostMapping
+    public AccountResponse registerAccount(@RequestBody RegisterAccountRequest request) {
+        return accountService.registerAccount(request);
+    }
+}
