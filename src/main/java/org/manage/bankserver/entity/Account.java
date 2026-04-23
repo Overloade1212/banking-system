@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.manage.bankserver.entity.enums.AccountType;
 import org.manage.bankserver.strategy.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -41,6 +41,7 @@ public class Account {
     private LocalDateTime createdAt;
 
     @Transient
+    @JsonIgnore
     private AccountPolicy policy;
 
     public void withdraw(BigDecimal amount) {
