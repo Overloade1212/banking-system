@@ -10,6 +10,7 @@ import org.manage.bankserver.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +31,38 @@ public class AccountService  {
                 .build();
 
         Account saved = repository.save(entity);
+
+        return AccountResponse.builder()
+                .id(saved.getId())
+                .username(saved.getUsername())
+                .balance(saved.getBalance())
+                .type(saved.getType().name())
+                .createdAt(saved.getCreatedAt())
+                .build();
+    }
+    public AccountResponse deposit(UUID id, BigDecimal amount) {
+        Account account = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        account.deposit(amount);
+
+        Account saved = repository.save(account);
+
+        return AccountResponse.builder()
+                .id(saved.getId())
+                .username(saved.getUsername())
+                .balance(saved.getBalance())
+                .type(saved.getType().name())
+                .createdAt(saved.getCreatedAt())
+                .build();
+    }
+    public AccountResponse withdraw(UUID id, BigDecimal amount) {
+        Account account = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        account.withdraw(amount); // ← тут работает твоя Strategy!
+
+        Account saved = repository.save(account);
 
         return AccountResponse.builder()
                 .id(saved.getId())
