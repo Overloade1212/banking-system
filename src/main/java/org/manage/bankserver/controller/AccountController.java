@@ -6,6 +6,7 @@ import org.manage.bankserver.dto.RegisterAccountRequest;
 import org.manage.bankserver.entity.Transaction;
 import org.manage.bankserver.repository.TransactionRepository;
 import org.manage.bankserver.service.AccountService;
+import org.manage.bankserver.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
 
     @PostMapping
     public AccountResponse registerAccount(@RequestBody RegisterAccountRequest request) {
@@ -40,6 +41,6 @@ public class AccountController {
     }
     @GetMapping("/{id}/transactions")
     public List<Transaction> getTransactions(@PathVariable UUID id) {
-        return transactionRepository.findByAccountId(id);
+        return transactionService.getTransactionsByAccountId(id);
     }
 }
