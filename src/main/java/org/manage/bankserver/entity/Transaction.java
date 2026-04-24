@@ -29,7 +29,7 @@ public class Transaction {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private String type; // DEPOSIT / WITHDRAW
+    private String type;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
