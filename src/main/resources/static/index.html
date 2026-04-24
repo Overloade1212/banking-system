@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="auth-screen">
+    <h2 id="textReg">Registration</h2>
+    <input type="text" id="name" name="username" placeholder="Full Name">
+    <select id="accaunt" name="accaunt">
+        <option value="" disabled selected>Account Type</option>
+        <option value="business">Business</option>
+        <option value="saving">Saving</option>
+        <option value="checking">Checking</option>
+        <option value="credit">Credit</option>
+        <option value="investment">Investment</option>
+    </select>
+    <button type="button" id="submit-btn">Create!</button>
+</div>
+
+    <div id="main-screen" class="hidden">
+        <h2>Welcome!</h2>
+        <div id="balance-section">
+            Your balance:<span id ="balance-amount">150$</span>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
