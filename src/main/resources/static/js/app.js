@@ -2,6 +2,8 @@ import { setAccount, getAccount } from "./state.js";
 import { renderApp } from "./ui.js";
 import { createAccount } from "./api.js";
 
+
+
 const submitBtn = document.getElementById("submit-btn");
 submitBtn.addEventListener('click',async ()=>{
     const username = document.getElementById('name').value;
