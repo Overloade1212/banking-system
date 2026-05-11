@@ -1,46 +1,339 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankApp</title>
+    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <div id="auth-screen">
-    <h2 id="textReg">Registration</h2>
-    <input type="text" id="name" name="username" placeholder="Full Name">
-    <select id="accaunt" name="accaunt">
-        <option value="" disabled selected>Account Type</option>
-        <option value="SAVINGS">SAVINGS</option>
-<option value="CHECKING">CHECKING</option>
-<option value="CREDIT">CREDIT</option>
-<option value="BUSINESS">BUSINESS</option>
-<option value="INVESTMENT">INVESTMENT</option>
-    </select>
-    <button type="button" id="submit-btn">Create!</button>
+
+<!-- ══════════════════════════════════════════
+     AUTH SCREEN (Login / Register)
+══════════════════════════════════════════ -->
+<div id="auth-screen" class="screen hidden">
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <div class="logo-icon">₿</div>
+            <span class="logo-text">BankApp</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Sign In</button>
+            <button class="auth-tab" data-tab="register">Open Account</button>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="tab-login" class="tab-content">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="login-name" placeholder="Enter your name" autocomplete="off">
+            </div>
+            <button id="login-btn" class="btn btn-primary">
+                <span class="btn-text">Sign In</span>
+                <span class="btn-loader hidden"></span>
+            </button>
+            <div id="login-error" class="error-msg hidden"></div>
+        </div>
+
+        <!-- Register Tab -->
+        <div id="tab-register" class="tab-content hidden">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="register-name" placeholder="John Doe" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Account Type</label>
+                <div class="select-wrapper">
+                    <select id="account-type">
+                        <option value="" disabled selected>Choose type…</option>
+                        <option value="SAVINGS">💰 Savings</option>
+                        <option value="CHECKING">🏦 Checking</option>
+                        <option value="CREDIT">💳 Credit</option>
+                        <option value="BUSINESS">🏢 Business</option>
+                        <option value="INVESTMENT">📈 Investment</option>
+                    </select>
+                </div>
+            </div>
+            <div id="type-info" class="type-info hidden"></div>
+            <button id="register-btn" class="btn btn-primary">
+                <span class="btn-text">Create Account</span>
+                <span class="btn-loader hidden"></span>
+            </button>
+            <div id="register-error" class="error-msg hidden"></div>
+        </div>
+
+    </div>
 </div>
 
-    <div id="main-screen" class="hidden">
-        <h2>Welcome!</h2>
-        <div id="balance-section">
-            Your balance:<span id ="balance-amount">150$</span>
-        </div>
-    <div id ="accaunt-card">
-        <div id="accaunt-name"></div>
-        <div id="accaunt-type"></div>
-        <div id="accaunt-balance"></div>
-        <div id="accaunt-id"></div>
-        <div id="accaunt-created"></div>
-    </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/keycloak-js@24.0.5/dist/keycloak.min.js"></script>
-    <script src="/js/keycloak.js"></script>
-    <script type = "module" src="/js/app.js"></script>
-</body>
+<!-- ══════════════════════════════════════════
+     MAIN DASHBOARD
+══════════════════════════════════════════ -->
+<div id="main-screen" class="screen hidden">
 
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon small">₿</div>
+            <span class="logo-text">BankApp</span>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user">
+                <div class="user-avatar" id="nav-avatar">J</div>
+                <span id="nav-username">User</span>
+            </div>
+            <button id="logout-btn" class="btn btn-ghost">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard">
+
+        <!-- Balance Hero -->
+        <section class="hero-section">
+            <div class="balance-card">
+                <div class="balance-card-bg"></div>
+                <div class="balance-card-content">
+                    <div class="balance-left">
+                        <p class="balance-label">Available Balance</p>
+                        <h1 class="balance-amount" id="balance-amount">$0.00</h1>
+                        <div class="balance-meta">
+                            <span class="account-badge" id="account-type-badge">SAVINGS</span>
+                            <span class="account-owner" id="account-owner">—</span>
+                        </div>
+                    </div>
+                    <div class="balance-right">
+                        <div class="balance-stat">
+                            <span class="stat-label">Account ID</span>
+                            <span class="stat-value mono" id="account-id-short">—</span>
+                        </div>
+                        <div class="balance-stat">
+                            <span class="stat-label">Opened</span>
+                            <span class="stat-value" id="account-created">—</span>
+                        </div>
+                        <div class="balance-stat">
+                            <span class="stat-label">Total In</span>
+                            <span class="stat-value green" id="stat-total-in">$0.00</span>
+                        </div>
+                        <div class="balance-stat">
+                            <span class="stat-label">Total Out</span>
+                            <span class="stat-value red" id="stat-total-out">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="actions-section">
+            <h3 class="section-title">Actions</h3>
+            <div class="actions-grid">
+                <button class="action-card" id="open-deposit-btn">
+                    <div class="action-icon deposit-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+                        </svg>
+                    </div>
+                    <span class="action-label">Deposit</span>
+                    <span class="action-desc">Add funds</span>
+                </button>
+                <button class="action-card" id="open-withdraw-btn">
+                    <div class="action-icon withdraw-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+                        </svg>
+                    </div>
+                    <span class="action-label">Withdraw</span>
+                    <span class="action-desc">Take funds</span>
+                </button>
+                <button class="action-card" id="open-transfer-btn">
+                    <div class="action-icon transfer-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="17 1 21 5 17 9"/>
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                            <polyline points="7 23 3 19 7 15"/>
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                    </div>
+                    <span class="action-label">Transfer</span>
+                    <span class="action-desc">Send money</span>
+                </button>
+                <button class="action-card" id="refresh-btn">
+                    <div class="action-icon refresh-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                    </div>
+                    <span class="action-label">Refresh</span>
+                    <span class="action-desc">Update data</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Account Info -->
+        <section class="info-section">
+            <h3 class="section-title">Account Details</h3>
+            <div class="info-card" id="account-info-card">
+                <!-- filled by JS -->
+            </div>
+        </section>
+
+        <!-- Transactions -->
+        <section class="transactions-section">
+            <div class="section-header">
+                <h3 class="section-title">Transactions</h3>
+                <div class="tx-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="DEPOSIT">In</button>
+                    <button class="filter-btn" data-filter="WITHDRAW">Out</button>
+                </div>
+            </div>
+            <div id="transactions-list" class="transactions-list">
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <p>No transactions yet</p>
+                    <span>Make a deposit to get started</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: Deposit
+══════════════════════════════════════════ -->
+<div id="deposit-modal" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title-row">
+                <div class="modal-icon deposit-icon-sm">↓</div>
+                <h3>Deposit Funds</h3>
+            </div>
+            <button class="modal-close" data-modal="deposit-modal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="amount-display">
+                <span class="currency-sign">$</span>
+                <input type="number" id="deposit-amount" class="amount-input" placeholder="0.00" min="0.01" step="0.01">
+            </div>
+            <div class="quick-amounts">
+                <button class="quick-btn" data-amount="100">$100</button>
+                <button class="quick-btn" data-amount="500">$500</button>
+                <button class="quick-btn" data-amount="1000">$1,000</button>
+                <button class="quick-btn" data-amount="5000">$5,000</button>
+            </div>
+            <div id="deposit-error" class="error-msg hidden"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-modal="deposit-modal">Cancel</button>
+            <button id="confirm-deposit-btn" class="btn btn-success">
+                <span class="btn-text">Confirm Deposit</span>
+                <span class="btn-loader hidden"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: Withdraw
+══════════════════════════════════════════ -->
+<div id="withdraw-modal" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title-row">
+                <div class="modal-icon withdraw-icon-sm">↑</div>
+                <h3>Withdraw Funds</h3>
+            </div>
+            <button class="modal-close" data-modal="withdraw-modal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="amount-display">
+                <span class="currency-sign">$</span>
+                <input type="number" id="withdraw-amount" class="amount-input" placeholder="0.00" min="0.01" step="0.01">
+            </div>
+            <div class="quick-amounts">
+                <button class="quick-btn" data-amount="50">$50</button>
+                <button class="quick-btn" data-amount="100">$100</button>
+                <button class="quick-btn" data-amount="500">$500</button>
+                <button class="quick-btn" data-amount="1000">$1,000</button>
+            </div>
+            <div id="withdraw-error" class="error-msg hidden"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-modal="withdraw-modal">Cancel</button>
+            <button id="confirm-withdraw-btn" class="btn btn-danger">
+                <span class="btn-text">Confirm Withdraw</span>
+                <span class="btn-loader hidden"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: Transfer
+══════════════════════════════════════════ -->
+<div id="transfer-modal" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title-row">
+                <div class="modal-icon transfer-icon-sm">⇄</div>
+                <h3>Transfer Funds</h3>
+            </div>
+            <button class="modal-close" data-modal="transfer-modal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Recipient Username</label>
+                <input type="text" id="transfer-recipient" placeholder="Enter username" autocomplete="off">
+            </div>
+            <div class="amount-display" style="margin-top:4px">
+                <span class="currency-sign">$</span>
+                <input type="number" id="transfer-amount" class="amount-input" placeholder="0.00" min="0.01" step="0.01">
+            </div>
+            <div class="quick-amounts">
+                <button class="quick-btn" data-amount="50">$50</button>
+                <button class="quick-btn" data-amount="100">$100</button>
+                <button class="quick-btn" data-amount="500">$500</button>
+                <button class="quick-btn" data-amount="1000">$1,000</button>
+            </div>
+            <div id="transfer-error" class="error-msg hidden"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-modal="transfer-modal">Cancel</button>
+            <button id="confirm-transfer-btn" class="btn btn-transfer">
+                <span class="btn-text">Send Transfer</span>
+                <span class="btn-loader hidden"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden">
+    <span id="toast-icon"></span>
+    <span id="toast-message"></span>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="loading-overlay">
+    <div class="spinner-ring"></div>
+    <p>Loading…</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/keycloak-js@24.0.5/dist/keycloak.min.js"></script>
+<script src="/js/keycloak.js?v=5"></script>
+<script type="module" src="/js/app.js?v=5"></script>
+</body>
 </html>

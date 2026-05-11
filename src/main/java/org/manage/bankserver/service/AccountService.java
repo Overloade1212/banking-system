@@ -102,4 +102,17 @@ public class AccountService  {
                 .createdAt(account.getCreatedAt())
                 .build();
     }
+
+    public AccountResponse getAccountByUsername(String username) {
+        Account account = repository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        return AccountResponse.builder()
+                .id(account.getId())
+                .username(account.getUsername())
+                .balance(account.getBalance())
+                .type(account.getType().name())
+                .createdAt(account.getCreatedAt())
+                .build();
+    }
 }
