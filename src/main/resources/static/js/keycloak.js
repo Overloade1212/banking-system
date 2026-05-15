@@ -6,10 +6,9 @@ window.keycloakReady = false;
 window._kc = null;
 
 async function initKeycloak() {
-    // Disabled — no Spring Security on backend yet
-    return;
+  
 
-    /* ENABLE WHEN READY:
+
     if (typeof Keycloak === "undefined") return;
     try {
         const kc = new Keycloak({
@@ -36,7 +35,7 @@ async function initKeycloak() {
     } catch (e) {
         console.warn("Keycloak unavailable:", e);
     }
-    */
+
 }
 
 function keycloakLogout() {
